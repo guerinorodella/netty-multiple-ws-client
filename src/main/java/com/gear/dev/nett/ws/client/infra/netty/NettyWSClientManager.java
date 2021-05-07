@@ -8,10 +8,12 @@ import java.util.List;
 /**
  * @author guerinorodella
  */
-public class WSClientManagerImpl implements WSClientManager {
+public class NettyWSClientManager implements WSClientManager {
 
     @Override
     public void start(List<ClientData> clientDataList) {
 
     }
+
+
 }

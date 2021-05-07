@@ -9,36 +9,34 @@ import java.util.Objects;
  */
 public class ClientData {
 
-    private String host;
-    private int port;
+    private int id;
+    private String name;
+    private String connectionUrl;
     private String token;
     private String region;
-    private String appKey;
 
-    public ClientData() {
-    }
-
-    public ClientData(String host, int port, String token, String region) {
-        this.host = host;
-        this.port = port;
+    public ClientData(int id, String name, String token, String region, String connectionUrl) {
+        this.id = id;
+        this.name = name;
         this.token = token;
         this.region = region;
+        this.connectionUrl = connectionUrl;
     }
 
-    public String getHost() {
-        return host;
+    public int getId() {
+        return id;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getPort() {
-        return port;
+    public String getName() {
+        return name;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getToken() {
@@ -57,24 +55,31 @@ public class ClientData {
         this.region = region;
     }
 
-    public String getAppKey() {
-        return appKey;
+    public String getConnectionUrl() {
+        return connectionUrl;
     }
 
-    public void setAppKey(String appKey) {
-        this.appKey = appKey;
+    public void setConnectionUrl(String connectionUrl) {
+        this.connectionUrl = connectionUrl;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClientData that = (ClientData) o;
-        return port == that.port && Objects.equals(host, that.host) && Objects.equals(token, that.token) && Objects.equals(region, that.region) && Objects.equals(appKey, that.appKey);
+        ClientData data = (ClientData) o;
+        return id == data.id && Objects.equals(name, data.name) && Objects.equals(connectionUrl, data.connectionUrl) && Objects.equals(token, data.token) && Objects.equals(region, data.region);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(host, port, token, region, appKey);
+        return Objects.hash(id, name, connectionUrl, token, region);
+    }
+
+    @Override
+    public String toString() {
+        return """
+                {"id = %s, name = %s}
+                """.formatted(id, name);
     }
 }

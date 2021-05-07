@@ -33,9 +33,10 @@ public class ClientLoaderServiceImplTest {
 
     @Test
     public void retornaraUmaListaVazia_quandoRepositorioRetornarNulo() {
+        String fooHost = "foo://foo.foo.com";
         when(repository.loadAllActiveClients()).thenReturn(null);
 
-        List<ClientData> result = instance.loadAll();
+        List<ClientData> result = instance.loadAll(fooHost);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -44,9 +45,10 @@ public class ClientLoaderServiceImplTest {
 
     @Test
     public void retornaraUmaListaVazia_quandoRepositorioRetornar_ListaVazia() {
+        String fooHost = "foo://foo.foo.com";
         when(repository.loadAllActiveClients()).thenReturn(emptyList());
 
-        List<ClientData> result = instance.loadAll();
+        List<ClientData> result = instance.loadAll(fooHost);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -56,9 +58,10 @@ public class ClientLoaderServiceImplTest {
     @Test
     public void retornara3Elementos_quandoExistirem_3ElementosAtivos() {
         var expectedList = Arrays.asList(new ClientLogin(), new ClientLogin(), new ClientLogin());
+        String fooHost = "foo://foo.foo.com";
         when(repository.loadAllActiveClients()).thenReturn(expectedList);
 
-        List<ClientData> result = instance.loadAll();
+        List<ClientData> result = instance.loadAll(fooHost);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
@@ -74,11 +77,12 @@ public class ClientLoaderServiceImplTest {
                 .addValid(FOO_ID, "Client #3", "us")
                 .build();
         when(repository.loadAllActiveClients()).thenReturn(clientLoginList);
+        String fooHost = "foo://foo.foo.com";
 
-        var expectedList = ClientDataFactory.create()
+        var expectedList = ClientDataFactory.create(fooHost)
                 .from(clientLoginList)
                 .build();
-        List<ClientData> resultList = instance.loadAll();
+        List<ClientData> resultList = instance.loadAll(fooHost);
 
         assertNotNull(resultList);
         assertFalse(resultList.isEmpty());

@@ -17,16 +17,14 @@ import java.util.stream.Collectors;
 public class ClientLoaderServiceImpl implements ClientLoaderService {
 
     private final ClientLoginRepository repository;
-    private final URLCreator urlCreator;
 
     @Inject
-    public ClientLoaderServiceImpl(ClientLoginRepository repository, URLCreator urlCreator) {
+    public ClientLoaderServiceImpl(ClientLoginRepository repository) {
         this.repository = repository;
-        this.urlCreator = urlCreator;
     }
 
     @Override
-    public List<ClientData> loadAll() {
+    public List<ClientData> loadAll(String connectionUrl) {
         var clientLoginList = repository.loadAllActiveClients();
         if (clientLoginList == null || clientLoginList.isEmpty()) {
             return Collections.emptyList();
@@ -34,10 +32,11 @@ public class ClientLoaderServiceImpl implements ClientLoaderService {
 
         return clientLoginList.stream()
                 .map(login -> new ClientData(
-                        urlCreator.createDefault(login.getRegion()),
-                        urlCreator.getDefaultPort(),
+                        login.getId(),
+                        login.getName(),
                         login.getToken(),
-                        login.getAppKey()))
+                        login.getRegion(),
+                        connectionUrl))
                 .collect(Collectors.toList());
     }
 

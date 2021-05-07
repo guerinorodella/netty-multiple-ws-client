@@ -1,7 +1,6 @@
 package com.gear.dev.nett.ws.client.core;
 
 import com.gear.dev.nett.ws.client.core.data.ClientLogin;
-import com.gear.dev.nett.ws.client.core.data.ClientLoginFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,29 +11,32 @@ import java.util.stream.Collectors;
  */
 public class ClientDataFactory {
 
-    private final URLCreator urlCreator;
-    private List<ClientData> instance;
+    private static final String DEFAULT_HOST = "wss://echo.websocket.org";
 
-    public ClientDataFactory() {
+    private List<ClientData> instance;
+    private String host;
+
+    private ClientDataFactory(String host) {
         this.instance = new ArrayList<>();
-        this.urlCreator = new URLCreator();
+        this.host = host;
     }
 
     public static ClientDataFactory create() {
-        return new ClientDataFactory();
+        return create(DEFAULT_HOST);
     }
 
-    public ClientDataFactory add(int id, String desc, String host) {
-        return null;
+    public static ClientDataFactory create(String host) {
+        return new ClientDataFactory(host);
     }
 
     public ClientDataFactory from(List<ClientLogin> clientLoginList) {
         instance =  clientLoginList.stream()
                 .map(login -> new ClientData(
-                        urlCreator.createDefault(login.getRegion()),
-                        urlCreator.getDefaultPort(),
+                        login.getId(),
+                        login.getName(),
                         login.getToken(),
-                        login.getAppKey()))
+                        login.getRegion(),
+                        host))
                 .collect(Collectors.toList());
         return this;
     }

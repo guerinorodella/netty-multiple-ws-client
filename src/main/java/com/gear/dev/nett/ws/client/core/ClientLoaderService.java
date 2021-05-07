@@ -7,5 +7,5 @@ import java.util.List;
  */
 public interface ClientLoaderService {
 
-    List<ClientData> loadAll();
+    List<ClientData> loadAll(String connectionUrl);
 }
