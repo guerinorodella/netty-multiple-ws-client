@@ -17,7 +17,7 @@ public class Util {
         if (sdf != null) {
             return sdf;
         }
-        sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss:sss");
+        sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return getSDF();
     }
 }
