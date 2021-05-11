@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Configuration;
  * @author guerinorodella
  */
 @Configuration
-@ComponentScan({"com.gear.dev.nett.ws.client.core", "com.gear.dev.nett.ws.client.infra"})
+@ComponentScan({"com.gear.dev.nett.ws.client.app", "com.gear.dev.nett.ws.client.core", "com.gear.dev.nett.ws.client.infra"})
 public class SpringConfiguration {
 }
