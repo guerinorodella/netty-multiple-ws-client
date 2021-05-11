@@ -36,7 +36,8 @@ public class NettyWSClientManager implements WSClientManager {
 
     @Override
     public void start(List<ClientData> clientDataList) {
-        bootstrap.group(eventGroup); // Esta instrução deve ser feita apenas 1 vez;
+        bootstrap.group(eventGroup) // Grupo é configurado uma única vez!
+                .channel(NioSocketChannel.class); // Canal também é configurado uma única vez;
 
         try {
 
@@ -49,13 +50,18 @@ public class NettyWSClientManager implements WSClientManager {
     }
 
     public void addClient(ClientData cliData) throws InterruptedException {
-        URI uri = URI.create(cliData.getConnectionUrl());
+        URI uri = URI.create(cliData.getConnectionUrl()); // Só pra facilitar a separação do host e porta
+
+        // Esse Handler é quem de fato, cuida da conexão, dos pacotes recebidos, envio etc.
+        // Ele está numa Factory porque tem que ser criado um novo para cada conexão
         var channelHandler = clientHandlerFactory.create(cliData);
-        bootstrap.channel(NioSocketChannel.class)
-                .handler(wsInitializerFactory.create(cliData, channelHandler))
-                .connect(uri.getHost(), uri.getPort())
+
+        // o Channel Initializer é quem CONFIGURA o pipeline do canal - é o que é, inicializa o canal!
+        var channelInitializer = wsInitializerFactory.create(cliData, channelHandler);
+
+        bootstrap.handler(channelInitializer) // configura o handler
+                .connect(uri.getHost(), uri.getPort()) // Instrução que de fato vai conectar
                 .sync();
-//        handler.handshakeFuture().sync();
     }
 
 
