@@ -12,7 +12,7 @@ import javax.inject.Inject;
 @Component
 public class AppStarter {
 
-    private static final String DEFAULT_CONNECTION_URL = "wss://echo.websocket.org";
+    private static final String DEFAULT_CONNECTION_URL = "wss://echo.websocket.org:443";
 
     private final ClientLoaderService clientLoaderService;
     private final WSClientManager clientManager;
