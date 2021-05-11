@@ -49,6 +49,6 @@ public class ClientLoginRepositoryImpl implements ClientLoginRepository {
     }
 
     private int randomId() {
-        return new Random(currentTimeMillis()).nextInt(100);
+        return new Random(currentTimeMillis()).nextInt(10000);
     }
 }
