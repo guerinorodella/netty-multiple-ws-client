@@ -20,6 +20,8 @@ import static java.lang.System.currentTimeMillis;
 @Repository
 public class ClientLoginRepositoryImpl implements ClientLoginRepository {
 
+    private int lastGeneratedId;
+
     @Override
     public List<ClientLogin> loadAllActiveClients() {
         return Arrays.asList(new ClientLogin(randomId(),
@@ -49,6 +51,14 @@ public class ClientLoginRepositoryImpl implements ClientLoginRepository {
     }
 
     private int randomId() {
-        return new Random(currentTimeMillis()).nextInt(10000);
+        int randomId = new Random(currentTimeMillis()).nextInt(100);
+        if(randomId == 0){
+            return randomId();
+        }
+        if (randomId == lastGeneratedId) {
+            return randomId();
+        }
+        lastGeneratedId = randomId;
+        return randomId;
     }
 }
