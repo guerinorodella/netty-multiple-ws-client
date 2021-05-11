@@ -16,6 +16,20 @@ public class ClientLogin {
     private boolean connected;
     private boolean valid;
 
+    public ClientLogin() {
+    }
+
+    public ClientLogin(int id, String name, String token, String renewToken, String region, String appKey, boolean connected, boolean valid) {
+        this.id = id;
+        this.name = name;
+        this.token = token;
+        this.renewToken = renewToken;
+        this.region = region;
+        this.appKey = appKey;
+        this.connected = connected;
+        this.valid = valid;
+    }
+
     public int getId() {
         return id;
     }
