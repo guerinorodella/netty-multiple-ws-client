@@ -79,7 +79,6 @@ public class ClientData {
     @Override
     public String toString() {
         return """
-                {"id = %s, name = %s}
-                """.formatted(id, name);
+                {"id = %s, name = %s}""".formatted(id, name);
     }
 }

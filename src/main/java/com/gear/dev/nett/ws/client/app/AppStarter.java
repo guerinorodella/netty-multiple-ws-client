@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import static com.gear.dev.nett.ws.client.infra.Util.currentDateTime;
+
 /**
  * @author guerinorodella
  */
@@ -25,10 +27,10 @@ public class AppStarter {
     }
 
     public void start() {
-        System.out.println("[NETTY-WS-Client] - Aplicação iniciada");
+        System.out.printf("[%s][NETTY-WS-Client] - Aplicação iniciada\n", currentDateTime());
 
         var clientDataList = clientLoaderService.loadAll(DEFAULT_CONNECTION_URL);
-        System.out.println("[NETTY-WS-Client] - Foram encontrados [" + clientDataList.size() + "] clientes");
+        System.out.printf("[%s][NETTY-WS-Client] - Foram encontrados [" + clientDataList.size() + "] clientes\n", currentDateTime());
         clientManager.start(clientDataList);
     }
 }

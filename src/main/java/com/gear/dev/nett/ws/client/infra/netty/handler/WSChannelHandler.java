@@ -9,6 +9,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.handler.timeout.IdleStateEvent;
 
+import static com.gear.dev.nett.ws.client.infra.Util.currentDateTime;
 import static io.netty.util.CharsetUtil.UTF_8;
 
 /**
@@ -20,7 +21,8 @@ public class WSChannelHandler extends SimpleChannelInboundHandler<Object> {
     private final WebSocketClientHandshaker handshaker;
     private ChannelPromise handshakeFuture;
 
-    public WSChannelHandler(WebSocketClientHandshaker handshaker, ClientData clientData) {
+    public WSChannelHandler(WebSocketClientHandshaker handshaker,
+                            ClientData clientData) {
         this.clientData = clientData;
         this.handshaker = handshaker;
     }
@@ -37,7 +39,7 @@ public class WSChannelHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        System.out.printf("[WS-CLIENT][%s] - Desconectou", clientData.toString());
+        System.out.printf("[%s][WS-CLIENT][%s] - Desconectou\n", currentDateTime(), clientData.toString());
     }
 
     @Override
@@ -50,7 +52,7 @@ public class WSChannelHandler extends SimpleChannelInboundHandler<Object> {
                 handshaker.finishHandshake(ch, (FullHttpResponse) msg);
                 handshakeFuture.setSuccess();
             } catch (WebSocketHandshakeException e) {
-                System.out.printf("[WS-CLIENT][%s] - Falhou ao se conectar -> %s", clientData.toString(), e.getMessage());
+                System.out.printf("[%s][WS-CLIENT][%s] - Falhou ao se conectar -> %s\n", currentDateTime(), clientData.toString(), e.getMessage());
                 handshakeFuture.setFailure(e);
             }
             return;
@@ -68,13 +70,13 @@ public class WSChannelHandler extends SimpleChannelInboundHandler<Object> {
         WebSocketFrame frame = (WebSocketFrame) msg;
         if (frame instanceof TextWebSocketFrame) {
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
-            System.out.printf("[WS-CLIENT][%s] - Recebido -> %s", clientData.toString(), textFrame.text());
+            System.out.printf("[%s][WS-CLIENT][%s] - Recebido -> %s", currentDateTime(), clientData.toString(), textFrame.text());
 
         } else if (frame instanceof PongWebSocketFrame) {
-            System.out.printf("[WS-CLIENT][%s] - Recebido -> Pong...", clientData.toString());
+            System.out.printf("[%s][WS-CLIENT][%s] - Recebido -> Pong...\n", currentDateTime(), clientData.toString());
 
         } else if (frame instanceof CloseWebSocketFrame) {
-            System.out.printf("[WS-CLIENT][%s] - Recebido -> Desconexão", clientData.toString());
+            System.out.printf("[%s][WS-CLIENT][%s] - Recebido -> Desconexão\n", currentDateTime(), clientData.toString());
             ch.close();
         }
 
@@ -83,6 +85,7 @@ public class WSChannelHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
+            System.out.printf("[%s][WS-CLIENT][%s] - Enviando -> Ping...\n", currentDateTime(), clientData.toString());
             ctx.writeAndFlush(new PingWebSocketFrame());
         }
     }

@@ -30,7 +30,7 @@ public class WSClientChannelInitializer extends ChannelInitializer<SocketChannel
 
     public static final int MAX_CONTENT_LENGTH = 8192;
     public static final int IGNORE = 0;
-    public static final int THIRTY = 3;
+    public static final int THIRTY = 30;
     private final ClientData clientData;
     private final ChannelHandler channelHandler;
 
@@ -49,7 +49,7 @@ public class WSClientChannelInitializer extends ChannelInitializer<SocketChannel
         // será chamado.
         // O Tempo para considerar ociosidade, é informado no construtor do IdleStateHandler. No nosso caso, são 30 segundos.
         // NOTA: idleStateHandler - deverá ser o PRIMEIRO handler a ser adicionado no pipeline.
-        pipeline.addLast("idleStateHandler", new IdleStateHandler(IGNORE, THIRTY, IGNORE, SECONDS));
+        pipeline.addLast("idleStateHandler", new IdleStateHandler(IGNORE, THIRTY, IGNORE, SECONDS)); // Funciona como Keep-alive
 
         URI uri = URI.create(clientData.getConnectionUrl());
         boolean securityEnabled = isSecurityEnabled(uri);
